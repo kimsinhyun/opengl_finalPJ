@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assimp-vc140-mt.dll">
+      <Filter>소스 파일</Filter>
+    </None>
+    <None Include="glew32.dll">
+      <Filter>소스 파일</Filter>
+    </None>
+    <None Include="res\shaders\modelLoading.frag" />
+    <None Include="res\shaders\modelLoading.vs" />
+    <None Include="res\models\grid\grid.mtl" />
+    <None Include="res\shaders\backgroundLoading.frag" />
+    <None Include="res\shaders\backgroundLoading.vs" />
+    <None Include="res\models\space\space2.mtl" />
+    <None Include="res\models\space\space.mtl" />
+    <None Include="res\models\yellow\yellow.mtl" />
+    <None Include="zlib1.dll" />
+    <None Include="freetype6.dll" />
+    <None Include="res\shaders\text.frag" />
+    <None Include="res\shaders\text.vs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="res\models\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\models\grid\grid.jpg">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\models\space\space2.jpg">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\models\space\space.jpg">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\models\yellow\yellow.jpg">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Object Include="res\models\grid\grid.obj" />
+    <Object Include="res\models\space\space2.obj" />
+    <Object Include="res\models\space\space.obj" />
+    <Object Include="res\models\yellow\yellow.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\arial.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="res\sound\pacman_chomp.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+    <Media Include="res\sound\pacman_death.wav">
+      <Filter>리소스 파일</Filter>
+    </Media>
+  </ItemGroup>
+</Project>
