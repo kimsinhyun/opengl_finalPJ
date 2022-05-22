@@ -33,6 +33,8 @@
     <None Include="freetype6.dll" />
     <None Include="res\shaders\text.frag" />
     <None Include="res\shaders\text.vs" />
+    <None Include="res\shaders\wall.frag" />
+    <None Include="res\shaders\wall.vs" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -53,6 +55,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="res\models\yellow\yellow.jpg">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="res\models\wall\container2.bmp">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

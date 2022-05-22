@@ -23,6 +23,9 @@
 #include <Model.h>
 #include <Mesh.h>
 #include <text.h>
+#include <keyframe.h>
+#include <cube.h>
+#include <getbmp.h>
 
 //sound headers
 //#include <mmsystem.h>
@@ -44,13 +47,14 @@ using namespace std;
 unsigned int SCR_WIDTH = 1800;
 unsigned int SCR_HEIGHT = 900;
 
+//for game
 bool die = false;
 GLFWwindow* mainWindow = NULL;
 glm::mat4 projection;
 Shader* shader;
 Shader* background;
 
-//pacman     
+//pacman move direction    
 enum Direction {
     FRONT, BACK, LEFT, RIGHT
 };
@@ -61,7 +65,7 @@ Direction currentDirections[5] = { FRONT , BACK, RIGHT, LEFT, FRONT};
 Direction nextDirections[5] = { FRONT , BACK, RIGHT, LEFT, FRONT };
 
 
-// For model
+// models
 Model* pacman;
 Model* ghost;
 Model* grid;
@@ -89,8 +93,7 @@ glm::vec3 ghostmoving3(3.0f, -0.5f, 1.0f);
 glm::vec3 ghostmoving4(8.0f, -0.5f, -4.0f);
 glm::vec3 ghostmoving5(1.0f, -0.5f, -7.0f);
 
-
-
+//for coins
 vector<glm::vec3> yellows;
 int yellows_num = 200;
 
@@ -100,21 +103,51 @@ float lastFrame = 0.0f;
 float cameraSpeed = 50.0f;
 float ghost_last_moving_time = 0.0f;
 float ghost_last_moving_times[5] = {};
+
 //for mouse
 bool validCursor = false;
-float yaw = -90.0f;    // yaw is initialized to -90.0 degrees since a yaw of 0.0 results
-                         // in a direction vector pointing to the right
-                         // so we initially rotate a bit to the left.
+float yaw = -90.0f;    // yaw is initialized to -90.0 degrees since a yaw of 0.0 results in a direction vector pointing to the right so we initially rotate a bit to the left.
 float pitch = 0.0f;
 float lastX = SCR_WIDTH / 2.0;
 float lastY = SCR_HEIGHT / 2.0;
 float fov = 45.0f;
 
-glm::mat4 model(1.0);
 
 // text shader
 Shader* textShader = NULL;
 Text* text = NULL;
+
+//animation
+enum RenderMode { INIT, ANIM, STOP };
+RenderMode renderMode;                  // current rendering mode
+float beginT;                           // animation beginning time (in sec)
+float timeT;                            // current time (in sec)
+float animEndTime = 5.0f;               // ending time of animation (in sec)
+float xTrans, yTrans, zTrans;           // current translation factors
+float xAngle, yAngle, zAngle;           // current rotation factors
+KeyFraming xTKF(4), yTKF(4), zTKF(4);   // translation keyframes
+KeyFraming xRKF(4), yRKF(4), zRKF(4);   // rotation keyframes
+
+
+//for lighting
+Shader* lightingShader = NULL;
+glm::vec3 spotlightSize(0.3f, 0.3f, 0.3f);
+glm::vec3 spotlightPos(1.0f, 1.0f, -1.0f);
+glm::vec3 spotlightDirection = -spotlightPos;
+glm::vec3 pointlightPos(1.2f, 0.7f, 1.0f);
+glm::vec3 pointlightSize(0.1f, 0.1f, 0.1f);
+
+// for lamp color
+glm::vec3 spotlightColor(1.0f, 0.4f, 0.7f);
+glm::vec3 pointlightColor(1.0f, 1.0f, 0.8f);
+
+
+glm::vec3 pointlightPos1(-1.2f, 0.7f, 1.5f);
+glm::vec3 pointlightColor1(0.4f, 5.0f, 0.8f);
+
+//for wall
+static unsigned int diffuseMap;
+Cube* wall;
 
 // Function prototypes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -129,6 +162,9 @@ GLfloat determineAngle();
 GLfloat temp_determineAngle(Direction* temp_nextDirection, Direction* temp_currentDirection, int idx);
 Direction generateRandomDirection();
 double calculateDistance(int camera_x, int camera_z, int ghost_x, int ghost_z);
+void initKeyframes();
+void updateAnimData();
+unsigned int loadTexture(const char* texFileName);
 
 
 int main()
@@ -139,15 +175,55 @@ int main()
     textShader = new Shader("res/shaders/text.vs", "res/shaders/text.frag");
     shader = new Shader("res/shaders/modelLoading.vs", "res/shaders/modelLoading.frag");
     background = new Shader("res/shaders/backgroundLoading.vs", "res/shaders/backgroundLoading.frag");
+    lightingShader = new Shader("res/shaders/wall.vs", "res/shaders/wall.frag");
+    diffuseMap = loadTexture("res/models/wall/container2.bmp");
 
-   
+    lightingShader->use();
+    lightingShader->setInt("material.diffuse", 0);
+    lightingShader->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
+    lightingShader->setFloat("material.shininess", 64.0f);
+    
+    lightingShader->setVec3("viewPos", cameraPos);
+    
+    // transfer lighting parameters to fragment shader
+
+    // pointlight
+    lightingShader->setVec3("pointLight.position", pointlightPos);
+    lightingShader->setVec3("pointLight.ambient", 0.0f, 0.0f, 0.0f);
+    lightingShader->setVec3("pointLight.diffuse", 1.0f, 0.9f, 0.7f);
+    lightingShader->setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
+    lightingShader->setFloat("pointLight.constant", 1.0f);
+    lightingShader->setFloat("pointLight.linear", 0.09f);
+    lightingShader->setFloat("pointLight.quadratic", 0.032f);
+
+    lightingShader->setVec3("pointLight1.position", pointlightPos1);
+    lightingShader->setVec3("pointLight1.ambient", 0.0f, 0.0f, 0.0f);
+    lightingShader->setVec3("pointLight1.diffuse", 0.2f, 2.5f, 0.4f);
+    lightingShader->setVec3("pointLight1.specular", 1.0f, 1.0f, 1.0f);
+    lightingShader->setFloat("pointLight1.constant", 1.0f);
+    lightingShader->setFloat("pointLight1.linear", 0.09f);
+    lightingShader->setFloat("pointLight1.quadratic", 0.032f);
+
+    // spotLight
+    lightingShader->setVec3("spotLight.position", spotlightPos);
+    lightingShader->setVec3("spotLight.direction", spotlightDirection);
+    lightingShader->setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
+    lightingShader->setVec3("spotLight.diffuse", 0.9f, 0.3f, 0.6f);
+    lightingShader->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
+    lightingShader->setFloat("spotLight.constant", 1.0f);
+    lightingShader->setFloat("spotLight.linear", 0.14f);
+    lightingShader->setFloat("spotLight.quadratic", 0.07f);
+    lightingShader->setFloat("spotLight.cutOff", glm::cos(glm::radians(17.5f)));
+    lightingShader->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(35.0f)));
+
     // Load models
     space = new Model((GLchar*)"res/models/space/space.obj");
     pacman = new Model((GLchar*)"res/models/pacman/QWER.obj");
     ghost = new Model((GLchar*)"res/models/ghost/ghost.obj");
     grid = new Model((GLchar*)"res/models/grid/grid.obj");
     yellow = new Model((GLchar*)"res/models/yellow/yellow.obj");
-    
+    wall = new Cube();
+
     for (int i = 0; i < yellows_num; i++) {
         yellows.push_back(glm::vec3(rand() % 160 - 80, 0, rand() % 160 - 80));
     }
@@ -155,10 +231,19 @@ int main()
         std::cout << yellows[i].x << std::endl;
     }
 
+    //init animation
+    initKeyframes();
+    timeT = 0.0f;
+    updateAnimData();
+    renderMode = INIT;
+
     while (!glfwWindowShouldClose(mainWindow) )
     {
         glfwPollEvents();
-        if (!die) render();
+        if (!die) {
+            renderMode = ANIM;
+            render();
+        }
         if (die) render2();
         
     }
@@ -220,9 +305,7 @@ void render()
         if (calculateDistance(cameraPos.x, cameraPos.z, temp_ghostmoving.x, temp_ghostmoving.z) <= 2) {
             die = true;
             bool dead_sound = PlaySound("res/sound/pacman_death.wav", NULL, SND_ASYNC);
-
         }
-
         if (idx == 0)
             ghostmoving1 = temp_ghostmoving;
         if (idx == 1)
@@ -238,9 +321,26 @@ void render()
     }
 
     //===================draw yellow balls ==========
+    //yellow ball rotate animation
+    if (renderMode == ANIM) {
+        float cTime = (float)glfwGetTime(); // current time
+        timeT = cTime - beginT;
+        updateAnimData();
+    }
+    if (timeT >= animEndTime) {
+        cout << "asdasdasdasd " << endl;
+        timeT = 0.0;
+        renderMode = ANIM;
+        beginT = glfwGetTime();
+        updateAnimData();
+    }
     for (int i = 0; i < yellows.size(); i++) {
         model = glm::mat4(1.0);
         model = glm::translate(model, yellows[i]);
+        glm::vec3 eulerAngles(glm::radians(xAngle), glm::radians(yAngle), glm::radians(zAngle));
+        glm::quat q(eulerAngles);
+        glm::mat4 rotMatrix = q.operator glm::mat4x4();
+        model = model * rotMatrix;
         model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
         shader->setMat4("model", model);
         yellow->Draw(shader);
@@ -258,9 +358,22 @@ void render()
     model = glm::translate(model, glm::vec3(0.0f, -0.5f, 0.0f));
     model = glm::scale(model, glm::vec3(80.0f, 80.0f, 80.0f));
     shader->setMat4("model", model);
-    
     grid->Draw(shader);
 
+
+    //====================draw walls=================
+    model = glm::mat4(1.0);
+    lightingShader->use();
+    lightingShader->setMat4("view", view);
+    lightingShader->setVec3("viewPos", glm::vec3(glm::vec4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f)));
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, diffuseMap);
+    model = glm::translate(model, glm::vec3(-10.0f, -0.5f, -10.0f));
+    model = glm::scale(model, glm::vec3(80.0f, 80.0f, 80.0f));
+    lightingShader->setMat4("model", model);
+    wall->draw(lightingShader);
+    
+    
     ////===================draw space background===================
     shader->use();
     model = glm::mat4(1.0);
@@ -272,26 +385,16 @@ void render()
     shader->setMat4("view", view);
     space->Draw(shader);
 
-    // Drawing texts
-    glDisable(GL_DEPTH_TEST);
-    std::string ghost_info = std::string("Left Ghost num: ") + to_string(ghost_object_num);
-    std::string yellow_ball_info = std::string("Left Bell num: ") + to_string(yellows_num);
-    text = new Text((char*)"fonts/arial.ttf", textShader, SCR_WIDTH, SCR_HEIGHT);
-    text->RenderText(ghost_info, 1600.0f, 850.0f, 0.5f, glm::vec3(0.3, 0.7f, 0.9f));
-    text->RenderText(yellow_ball_info, 1600.0f, 750.0f, 0.5f, glm::vec3(1.0, 1.0f, 0.0f));
-    glEnable(GL_DEPTH_TEST);
     glfwSwapBuffers(mainWindow);
 }
-void render2()
-{
-
+void render2() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // Drawing texts
-    glDisable(GL_DEPTH_TEST);
+    //glDisable(GL_DEPTH_TEST);
     text = new Text((char*)"fonts/arial.ttf", textShader, SCR_WIDTH, SCR_HEIGHT);
     text->RenderText("YOU DIE (press R to restart game)", 750.0f, 450.0f, 0.5f, glm::vec3(1.0, 1.0f, 0.0f));
-    glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_DEPTH_TEST);
     glfwSwapBuffers(mainWindow);
 }
 
@@ -308,7 +411,7 @@ GLFWwindow* glAllInit()
     glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
     // Create a GLFWwindow object that we can use for GLFW's functions
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Model Loading", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Project_2016147588", nullptr, nullptr);
 
     if (nullptr == window)
     {
@@ -339,6 +442,7 @@ GLFWwindow* glAllInit()
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
     // OpenGL options
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -568,4 +672,91 @@ Direction generateRandomDirection() {
 double calculateDistance(int camera_x, int camera_z, int ghost_x, int ghost_z)
 {
     return  sqrt(pow(camera_x - ghost_x, 2) + pow(camera_z - ghost_z, 2));
+}
+
+
+void initKeyframes() {
+    // x-translation keyframes
+    xTKF.setKey(0, 0, -5.0);
+    xTKF.setKey(1, 1.5, -2.0);
+    xTKF.setKey(2, 3.0, 2.0);
+    xTKF.setKey(3, animEndTime, 5.0);
+
+    // y-translation keyframes
+    yTKF.setKey(0, 0, 3.0);
+    yTKF.setKey(1, 1.5, -2.0);
+    yTKF.setKey(2, 3.0, 2.0);
+    yTKF.setKey(3, animEndTime, -3.0);
+
+    // z-translation keyframes
+    zTKF.setKey(0, 0, 1.0);
+    zTKF.setKey(1, 1.5, -2.0);
+    zTKF.setKey(2, 3.0, 2.0);
+    zTKF.setKey(3, animEndTime, 0.0);
+
+    // x-rotation keyframes
+    xRKF.setKey(0, 0, 0.0);
+    xRKF.setKey(1, 1.5, 20.0);
+    xRKF.setKey(2, 3.0, 80.0);
+    xRKF.setKey(3, animEndTime, 0.0);
+
+    // y-rotation keyframes
+    yRKF.setKey(0, 0, 0.0);
+    yRKF.setKey(1, 1.5, -30.0);
+    yRKF.setKey(2, 3.0, 50.0);
+    yRKF.setKey(3, animEndTime, 0.0);
+
+    // z-rotation keyframes
+    zRKF.setKey(0, 0, 0.0);
+    zRKF.setKey(1, 1.5, 90.0);
+    zRKF.setKey(2, 3.0, 180.0);
+    zRKF.setKey(3, animEndTime, 200.0);
+}
+
+void updateAnimData() {
+    if (timeT > animEndTime) {
+        renderMode = STOP;
+        timeT = animEndTime;
+    }
+    xTrans = xTKF.getValLinear(timeT);
+    yTrans = yTKF.getValLinear(timeT);
+    zTrans = zTKF.getValLinear(timeT);
+    xAngle = xRKF.getValLinear(timeT);
+    yAngle = yRKF.getValLinear(timeT);
+    zAngle = zRKF.getValLinear(timeT);
+}
+
+unsigned int loadTexture(const char* texFileName) {
+    unsigned int texture;
+
+    // Create texture ids.
+    glGenTextures(1, &texture);
+
+    // All upcomming GL_TEXTURE_2D operations now on "texture" object
+    glBindTexture(GL_TEXTURE_2D, texture);
+
+    // Set texture parameters for wrapping.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+    // Set texture parameters for filtering.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Load the image from bmp file
+    BitMapFile* image;
+    if (!(image = getbmp(texFileName))) {
+        cout << texFileName << " open error ... exit" << endl;
+        exit(1);
+    }
+    else {
+        cout << texFileName << " loaded. size: " << image->sizeX << " x " << image->sizeY << endl;
+    }
+
+    // Specify image data for currently active texture object.
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image->sizeX, image->sizeY, 0,
+        GL_RGBA, GL_UNSIGNED_BYTE, image->data);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    return texture;
 }
