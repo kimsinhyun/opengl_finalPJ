@@ -129,24 +129,8 @@ KeyFraming xTKF(4), yTKF(4), zTKF(4);   // translation keyframes
 KeyFraming xRKF(4), yRKF(4), zRKF(4);   // rotation keyframes
 
 
-//for lighting
-Shader* lightingShader = NULL;
-glm::vec3 spotlightSize(0.3f, 0.3f, 0.3f);
-glm::vec3 spotlightPos(1.0f, 1.0f, -1.0f);
-glm::vec3 spotlightDirection = -spotlightPos;
-glm::vec3 pointlightPos(1.2f, 0.7f, 1.0f);
-glm::vec3 pointlightSize(0.1f, 0.1f, 0.1f);
-
-// for lamp color
-glm::vec3 spotlightColor(1.0f, 0.4f, 0.7f);
-glm::vec3 pointlightColor(1.0f, 1.0f, 0.8f);
 
 
-glm::vec3 pointlightPos1(-1.2f, 0.7f, 1.5f);
-glm::vec3 pointlightColor1(0.4f, 5.0f, 0.8f);
-
-//for wall
-static unsigned int diffuseMap;
 Cube* wall;
 
 // Function prototypes
@@ -175,46 +159,9 @@ int main()
     textShader = new Shader("res/shaders/text.vs", "res/shaders/text.frag");
     shader = new Shader("res/shaders/modelLoading.vs", "res/shaders/modelLoading.frag");
     background = new Shader("res/shaders/backgroundLoading.vs", "res/shaders/backgroundLoading.frag");
-    lightingShader = new Shader("res/shaders/wall.vs", "res/shaders/wall.frag");
-    diffuseMap = loadTexture("res/models/wall/container2.bmp");
 
-    lightingShader->use();
-    lightingShader->setInt("material.diffuse", 0);
-    lightingShader->setVec3("material.specular", 0.5f, 0.5f, 0.5f);
-    lightingShader->setFloat("material.shininess", 64.0f);
-    
-    lightingShader->setVec3("viewPos", cameraPos);
-    
     // transfer lighting parameters to fragment shader
 
-    // pointlight
-    lightingShader->setVec3("pointLight.position", pointlightPos);
-    lightingShader->setVec3("pointLight.ambient", 0.0f, 0.0f, 0.0f);
-    lightingShader->setVec3("pointLight.diffuse", 1.0f, 0.9f, 0.7f);
-    lightingShader->setVec3("pointLight.specular", 1.0f, 1.0f, 1.0f);
-    lightingShader->setFloat("pointLight.constant", 1.0f);
-    lightingShader->setFloat("pointLight.linear", 0.09f);
-    lightingShader->setFloat("pointLight.quadratic", 0.032f);
-
-    lightingShader->setVec3("pointLight1.position", pointlightPos1);
-    lightingShader->setVec3("pointLight1.ambient", 0.0f, 0.0f, 0.0f);
-    lightingShader->setVec3("pointLight1.diffuse", 0.2f, 2.5f, 0.4f);
-    lightingShader->setVec3("pointLight1.specular", 1.0f, 1.0f, 1.0f);
-    lightingShader->setFloat("pointLight1.constant", 1.0f);
-    lightingShader->setFloat("pointLight1.linear", 0.09f);
-    lightingShader->setFloat("pointLight1.quadratic", 0.032f);
-
-    // spotLight
-    lightingShader->setVec3("spotLight.position", spotlightPos);
-    lightingShader->setVec3("spotLight.direction", spotlightDirection);
-    lightingShader->setVec3("spotLight.ambient", 0.0f, 0.0f, 0.0f);
-    lightingShader->setVec3("spotLight.diffuse", 0.9f, 0.3f, 0.6f);
-    lightingShader->setVec3("spotLight.specular", 1.0f, 1.0f, 1.0f);
-    lightingShader->setFloat("spotLight.constant", 1.0f);
-    lightingShader->setFloat("spotLight.linear", 0.14f);
-    lightingShader->setFloat("spotLight.quadratic", 0.07f);
-    lightingShader->setFloat("spotLight.cutOff", glm::cos(glm::radians(17.5f)));
-    lightingShader->setFloat("spotLight.outerCutOff", glm::cos(glm::radians(35.0f)));
 
     // Load models
     space = new Model((GLchar*)"res/models/space/space.obj");
@@ -236,6 +183,7 @@ int main()
     timeT = 0.0f;
     updateAnimData();
     renderMode = INIT;
+    text = new Text((char*)"fonts/arial.ttf", textShader, SCR_WIDTH, SCR_HEIGHT);
 
     while (!glfwWindowShouldClose(mainWindow) )
     {
@@ -362,16 +310,6 @@ void render()
 
 
     //====================draw walls=================
-    model = glm::mat4(1.0);
-    lightingShader->use();
-    lightingShader->setMat4("view", view);
-    lightingShader->setVec3("viewPos", glm::vec3(glm::vec4(cameraPos.x, cameraPos.y, cameraPos.z, 1.0f)));
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, diffuseMap);
-    model = glm::translate(model, glm::vec3(-10.0f, -0.5f, -10.0f));
-    model = glm::scale(model, glm::vec3(80.0f, 80.0f, 80.0f));
-    lightingShader->setMat4("model", model);
-    wall->draw(lightingShader);
     
     
     ////===================draw space background===================
@@ -392,7 +330,6 @@ void render2() {
 
     // Drawing texts
     //glDisable(GL_DEPTH_TEST);
-    text = new Text((char*)"fonts/arial.ttf", textShader, SCR_WIDTH, SCR_HEIGHT);
     text->RenderText("YOU DIE (press R to restart game)", 750.0f, 450.0f, 0.5f, glm::vec3(1.0, 1.0f, 0.0f));
     //glEnable(GL_DEPTH_TEST);
     glfwSwapBuffers(mainWindow);

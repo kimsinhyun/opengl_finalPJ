@@ -1,4 +1,5 @@
-﻿  main.cpp
+﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: 중간 디렉터리(Debug\)에 다른 프로젝트(program33_fps.vcxproj)에서 공유하는 파일이 포함되어 있습니다.  이로 인해 잘못된 정리 및 다시 빌드 동작이 수행될 수 있습니다.
+  main.cpp
 C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\utils\arcball.h(82,27): warning C4244: '=': 'double'에서 'T'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
@@ -8,80 +9,79 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\shared\minwindef.h(1
 C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\External Libs\GLFW\include\GLFW\glfw3.h(123): message : 'APIENTRY'의 이전 정의를 참조하십시오.
 C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(111,13): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
 C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(112,13): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(173,15): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(230,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(257,24): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(290,44): warning C4305: '-=': 'double'에서 'T'(으)로 잘립니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(157,15): warning C4244: '인수': 'time_t'에서 'unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(177,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(205,24): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(238,44): warning C4305: '-=': 'double'에서 'T'(으)로 잘립니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(294,44): warning C4305: '+=': 'double'에서 'T'(으)로 잘립니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(242,44): warning C4305: '+=': 'double'에서 'T'(으)로 잘립니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(298,44): warning C4305: '+=': 'double'에서 'T'(으)로 잘립니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(246,44): warning C4305: '+=': 'double'에서 'T'(으)로 잘립니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(302,44): warning C4305: '-=': 'double'에서 'T'(으)로 잘립니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(250,44): warning C4305: '-=': 'double'에서 'T'(으)로 잘립니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(305,93): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(253,93): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(305,73): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(253,73): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(305,53): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(253,53): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(305,40): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(253,40): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(334,29): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(337,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(347,81): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(282,29): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(285,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(295,81): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(347,67): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(295,67): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(347,53): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(295,53): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(347,40): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(295,40): warning C4244: '인수': 'T'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
           with
           [
               T=float
           ]
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(479,31): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(480,32): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(512,21): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(513,21): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(525,19): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(526,19): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(527,13): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(528,13): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(554,23): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
-C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(670): warning C4715: 'generateRandomDirection': 모든 제어 경로에서 값을 반환하지는 않습니다.
-LINK : warning LNK4098: 'MSVCRT' defaultlib가 다른 라이브러리와 충돌합니다. /NODEFAULTLIB:library를 사용하십시오.
-  program33_fps.vcxproj -> C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\Debug\program33_fps.exe
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(416,31): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(417,32): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(449,21): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(450,21): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(462,19): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(463,19): warning C4244: '초기화 중': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(464,13): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(465,13): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(491,23): warning C4244: '-=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\program33_fps\main.cpp(607): warning C4715: 'generateRandomDirection': 모든 제어 경로에서 값을 반환하지는 않습니다.
+  program33_fps.vcxproj -> C:\Users\Administrator\Desktop\sinhyun code\computerGraphics_projects\projects\program33_fps\Debug\Project_2016147588.exe
